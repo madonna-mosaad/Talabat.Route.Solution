@@ -1,4 +1,4 @@
-
+using Talabat.API.Helpers;
 using Core.Layer.Models;
 using Core.Layer.RepositoriesInterface;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +28,7 @@ namespace Talabat.API
             //builder.Services.AddScoped<IGenericRepository<ProductCategory>, GenericRepository<ProductCategory>>();
             //make this instead of register each module
             builder.Services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
+            builder.Services.AddAutoMapper(typeof(MappingProfile));
 
             var app = builder.Build();
             //explicit dependency injection
@@ -53,7 +54,7 @@ namespace Talabat.API
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
+            app.UseStaticFiles();
             app.UseHttpsRedirection();
 
             app.UseAuthorization();

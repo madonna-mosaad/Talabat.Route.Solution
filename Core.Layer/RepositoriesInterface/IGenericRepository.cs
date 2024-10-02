@@ -1,4 +1,5 @@
 ﻿using Core.Layer.Models;
+using Core.Layer.Specifications.SpecificationInterfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,12 @@ namespace Core.Layer.RepositoriesInterface
 {
     public interface IGenericRepository<T> where T : ModelBase
     {
-        public Task<IEnumerable<T>> GetAllAsync();
-        public Task<T> GetByIdAsync(int id);
+        //public Task<IEnumerable<T>> GetAllAsync();
+        //public Task<T> GetByIdAsync(int id);
         //add , update and delete in Dashboard because it related to admin role
+
+        public Task<IEnumerable<T>> GetAllWithSpecAsync(ISpecifications<T> specifications);
+        public Task<T> GetByIdWithSpecAsync(ISpecifications<T> specifications);    
 
     }
 }
