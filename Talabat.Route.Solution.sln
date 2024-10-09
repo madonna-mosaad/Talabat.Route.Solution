@@ -5,11 +5,11 @@ VisualStudioVersion = 17.10.34928.147
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Talabat.API", "Talabat.API\Talabat.API.csproj", "{6153992C-5CF2-4C5A-88A9-348D2D345E58}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository.Layer", "Repository.Layer\Repository.Layer.csproj", "{28D6F522-57BF-4003-BBFA-A71A26A9152E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository.Layer", "Repository.Layer\Repository.Layer.csproj", "{28D6F522-57BF-4003-BBFA-A71A26A9152E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services.Layer", "Services.Layer\Services.Layer.csproj", "{D881C07F-8FE1-4EFC-92C8-8C221CE53083}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services.Layer", "Services.Layer\Services.Layer.csproj", "{D881C07F-8FE1-4EFC-92C8-8C221CE53083}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Layer", "Core.Layer\Core.Layer.csproj", "{748CE99F-4CED-47D8-BEF9-FE14CF7C85C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Layer", "Core.Layer\Core.Layer.csproj", "{748CE99F-4CED-47D8-BEF9-FE14CF7C85C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,11 +1,11 @@
-using Talabat.API.Helpers;
-using Core.Layer.Models;
-using Core.Layer.RepositoriesInterface;
+
 using Microsoft.EntityFrameworkCore;
 using Repository.Layer.Data.Context;
 using Repository.Layer.Data;
-using Repository.Layer.Repositories;
 using System;
+using Talabat.API.MiddleWares;
+using Talabat.API.Extensions;
+
 
 namespace Talabat.API
 {
@@ -23,12 +23,8 @@ namespace Talabat.API
             builder.Services.AddSwaggerGen();
             builder.Services.AddDbContext<StoreDbContext>(options => options
             .UseSqlServer(builder.Configuration.GetConnectionString("Default")));
-            //builder.Services.AddScoped<IGenericRepository<Product>,GenericRepository<Product>>();
-            //builder.Services.AddScoped<IGenericRepository<ProductBrand>, GenericRepository<ProductBrand>>();
-            //builder.Services.AddScoped<IGenericRepository<ProductCategory>, GenericRepository<ProductCategory>>();
-            //make this instead of register each module
-            builder.Services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
-            builder.Services.AddAutoMapper(typeof(MappingProfile));
+            builder.Services.AddServices();
+            builder.Services.AddValidErrorServices();
 
             var app = builder.Build();
             //explicit dependency injection
@@ -49,6 +45,9 @@ namespace Talabat.API
             }
 
             // Configure the HTTP request pipeline.
+
+            //server error
+            app.UseMiddleware<ExceptionMiddleWare>();
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -58,7 +57,8 @@ namespace Talabat.API
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
+            //not found endpoint
+            app.UseStatusCodePagesWithReExecute("/Errors/{0}");
 
             app.MapControllers();
 
