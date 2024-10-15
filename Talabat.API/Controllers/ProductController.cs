@@ -5,6 +5,7 @@ using Core.Layer.Specifications.SpecificationClasses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Talabat.API.DTO;
+using Talabat.API.Helpers;
 using Talabat.API.Response;
 
 namespace Talabat.API.Controllers
@@ -25,12 +26,14 @@ namespace Talabat.API.Controllers
         }
         //to arrive to this end point use => {BaseUrl}/api/Products
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsAsync()
+        public async Task<ActionResult<IReadOnlyList<ProductDTO>>> GetProductsAsync([FromQuery]ProductGetAllParameters productGetAllParameters)
         {
-            var spec = new ProductsSpecificationValues();
+            var spec = new ProductsSpecificationValues(productGetAllParameters);
             var products =await _ProductGenericRepository.GetAllWithSpecAsync(spec);
-            var productsDTo = _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDTO>>(products);
-            return Ok(productsDTo);
+            var productsDTo = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductDTO>>(products);
+            var specCount=new ProductsSpecificationValues(productGetAllParameters.Search,productGetAllParameters.BrandId,productGetAllParameters.CategoryId);
+            int count = await _ProductGenericRepository.CountAsync(specCount);
+            return Ok(new PaginationResponse<ProductDTO>(productGetAllParameters.PageSize,productGetAllParameters.PageIndex,count,productsDTo));
         }
         //to arrive to this end point use => {BaseUrl}/api/Products/id_value
         [HttpGet("{id}")]
@@ -48,13 +51,13 @@ namespace Talabat.API.Controllers
             return Ok(productDTO);
         }
         [HttpGet("GetBrands")]
-        public async Task<ActionResult<ProductBrand>> GetBrands()
+        public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetBrands()
         {
             var brands =await _brandGenericRepository.GetAllAsync();
             return Ok(brands);
         }
         [HttpGet("GetCategories")]
-        public async Task<ActionResult<ProductCategory>> GetCategories()
+        public async Task<ActionResult<IReadOnlyList<ProductCategory>>> GetCategories()
         {
             var categories =await _categoryGenericRepository.GetAllAsync();
             return Ok(categories);

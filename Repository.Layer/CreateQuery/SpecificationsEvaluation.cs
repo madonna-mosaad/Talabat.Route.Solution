@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Repository.Layer.CreateQuery
 {
-    internal static class SpecificationsEvaluation<T> where T : ModelBase
+    public static class SpecificationsEvaluation<T> where T : ModelBase
     {
         //parmeters are 1-the sequence(_dbcontext.Products(all products data that its type is Collection))
                       //2-the specifications
@@ -20,6 +20,18 @@ namespace Repository.Layer.CreateQuery
             if(specifications.Critria != null)
             {
                 query=query.Where(specifications.Critria);
+            }
+            if(specifications.OrderBy != null)
+            {
+                query = query.OrderBy(specifications.OrderBy);
+            }
+            else if(specifications.OrderByDescending != null)
+            {
+                query = query.OrderByDescending(specifications.OrderByDescending);
+            }
+            if (specifications.IsPaginationEnabled)
+            {
+                query = query.Skip(specifications.Skip).Take(specifications.Take);
             }
             query = specifications.Includes.Aggregate(query, (Cur_Query, Include_spec) => Cur_Query.Include(Include_spec));
             return query;

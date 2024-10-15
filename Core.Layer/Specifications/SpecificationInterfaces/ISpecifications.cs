@@ -17,5 +17,10 @@ namespace Core.Layer.Specifications.SpecificationInterfaces
         //other specifications is any thing like include , take , skip,orderBy
         //collection of Include because i can have more than one include in my query
         public List<Expression<Func<T,Object>>> Includes {  get; set; }
+        public Expression<Func<T,Object>> OrderBy { get; set; }
+        public Expression<Func<T,Object>> OrderByDescending { get; set; }
+        public int Skip {  get; set; }
+        public int Take { get; set; }
+        public bool IsPaginationEnabled {  get; set; }
     }
 }

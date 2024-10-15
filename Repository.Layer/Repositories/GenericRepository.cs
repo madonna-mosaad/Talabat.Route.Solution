@@ -23,7 +23,7 @@ namespace Repository.Layer.Repositories
         }
 
 
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public async Task<IReadOnlyList<T>> GetAllAsync()
         {
     
             return await _storeDbContext.Set<T>().ToListAsync();
@@ -38,7 +38,7 @@ namespace Repository.Layer.Repositories
         //if product
         //take specifications only because the sequence(TableData) will get it from DB
         //specifications against Interface not concrete class because we donot know the type of T(it is generic)
-        public async Task<IEnumerable<T>> GetAllWithSpecAsync(ISpecifications<T> specifications)
+        public async Task<IReadOnlyList<T>> GetAllWithSpecAsync(ISpecifications<T> specifications)
         {
             return await SpecificationsEvaluation<T>.GetQuery(_storeDbContext.Set<T>(),specifications).ToListAsync();
         }
@@ -46,6 +46,11 @@ namespace Repository.Layer.Repositories
         public async Task<T> GetByIdWithSpecAsync(ISpecifications<T> specifications)
         {
             return await SpecificationsEvaluation<T>.GetQuery(_storeDbContext.Set<T>() , specifications).FirstOrDefaultAsync();
+        }
+
+        public async Task<int> CountAsync(ISpecifications<T> specifications)
+        {
+            return await SpecificationsEvaluation<T>.GetQuery(_storeDbContext.Set<T>(), specifications).CountAsync();
         }
     }
 }
