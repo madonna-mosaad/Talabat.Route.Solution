@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Data\Identity\Configurations\" />
+    <Folder Include="Data\Identity\Migrations\" />
     <Folder Include="Data\Migrations\" />
   </ItemGroup>
 
