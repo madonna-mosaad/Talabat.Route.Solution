@@ -1,4 +1,5 @@
 ﻿using Core.Layer.Models;
+using Core.Layer.Order_Aggregate;
 using Repository.Layer.Data.Context;
 using System;
 using System.Collections.Generic;
@@ -53,6 +54,19 @@ namespace Repository.Layer.Data
                    
                 }
             }
+            var deliveries = File.ReadAllText("../Repository.Layer/Data/DataSeeding/delivery.json");
+            var deliveriesDes = JsonSerializer.Deserialize<List<DeliveryMethod>>(deliveries);
+            if(deliveriesDes.Count() > 0)
+            {
+                if(storeDbContext.deliveryMethods.Count() == 0)
+                {
+                    foreach(var deliver in deliveriesDes)
+                    {
+                        storeDbContext.deliveryMethods.Add(deliver);
+                    }
+                }
+            }
+
             await storeDbContext.SaveChangesAsync();
         }
     }

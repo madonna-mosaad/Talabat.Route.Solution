@@ -35,7 +35,7 @@ namespace Talabat.API
             builder.Services.AddServices();
             builder.Services.AddValidErrorServices();
            // to register the MemoryDbContext(Redis Context)
-            builder.Services.AddSingleton((provider) =>
+            builder.Services.AddSingleton<IConnectionMultiplexer>((provider) =>
             {
                 var connect = builder.Configuration.GetConnectionString("Redis");
                 return ConnectionMultiplexer.Connect(connect);

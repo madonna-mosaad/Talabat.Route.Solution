@@ -52,5 +52,20 @@ namespace Repository.Layer.Repositories
         {
             return await SpecificationsEvaluation<T>.GetQuery(_storeDbContext.Set<T>(), specifications).CountAsync();
         }
+
+        public void Delete(T entity)
+        {
+            _storeDbContext.Remove(entity);
+        }
+
+        public void Update(T entity)
+        {
+            _storeDbContext.Update(entity);
+        }
+
+        public void Add(T entity)
+        {
+            _storeDbContext.Add(entity);
+        }
     }
 }

@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Repository.Layer\Repository.Layer.csproj" />
+    <ProjectReference Include="..\Services.Layer\Services.Layer.csproj" />
   </ItemGroup>
 
 </Project>

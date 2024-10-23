@@ -18,5 +18,8 @@ namespace Core.Layer.RepositoriesInterface
         public Task<IReadOnlyList<T>> GetAllWithSpecAsync(ISpecifications<T> specifications);
         public Task<T> GetByIdWithSpecAsync(ISpecifications<T> specifications);
         public Task<int> CountAsync(ISpecifications<T> specifications);
+        public void Delete(T entity);
+        public void Update(T entity);
+        public void Add(T entity);
     }
 }

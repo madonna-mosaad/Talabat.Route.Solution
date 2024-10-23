@@ -1,4 +1,5 @@
 ﻿using Core.Layer.Models;
+using Core.Layer.Order_Aggregate;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -20,5 +21,8 @@ namespace Repository.Layer.Data.Context
         public DbSet<Product> products { get; set; }
         public DbSet<ProductBrand> productBrands { get; set; }
         public DbSet<ProductCategory> productCategories { get; set; }
+        public DbSet<DeliveryMethod> deliveryMethods { get; set; }
+        public DbSet<Order> orders { get; set; }
+        public DbSet<OrderItem> ordersItem { get; set; }    
     }
 }

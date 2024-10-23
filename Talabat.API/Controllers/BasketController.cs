@@ -42,7 +42,7 @@ namespace Talabat.API.Controllers
            
             return Ok(basket);
         }
-        [HttpDelete("{id}")]
+        [HttpDelete]
         public async Task DeleteBasketAsync(string id)
         {
             await _basketRepository.DeleteAsync(id);    

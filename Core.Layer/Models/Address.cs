@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Core.Layer.Models
 {
+    //relation 1:1 and this is the mindatory so this table has the FK
     public class Address
     {
-        //relation 1:1 and this is the mindatory so this table has the FK
         public int Id { get; set; }
         //first person can recieve the item
         public string FName { get; set; }

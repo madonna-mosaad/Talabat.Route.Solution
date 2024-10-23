@@ -1,5 +1,7 @@
 ﻿using Core.Layer.RepositoriesInterface;
+using Core.Layer.ServiceInterfaces;
 using Repository.Layer.Repositories;
+using Services.Layer;
 using Talabat.API.Helpers;
 
 namespace Talabat.API.Extensions
@@ -13,6 +15,8 @@ namespace Talabat.API.Extensions
             //builder.Services.AddScoped<IGenericRepository<ProductCategory>, GenericRepository<ProductCategory>>();
             //make this instead of register each module
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
+            services.AddScoped(typeof(IOrderServices), typeof(OrderService));
             services.AddAutoMapper(typeof(MappingProfile));
             return services;
         }
