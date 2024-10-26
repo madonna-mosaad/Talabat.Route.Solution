@@ -2,6 +2,7 @@
 using Core.Layer.Models;
 using Core.Layer.RepositoriesInterface;
 using Core.Layer.Specifications.SpecificationClasses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Talabat.API.DTO;
@@ -26,6 +27,7 @@ namespace Talabat.API.Controllers
         }
         //to arrive to this end point use => {BaseUrl}/api/Products
         [HttpGet]
+        [Authorize(AuthenticationSchemes ="Bearer")]
         public async Task<ActionResult<IReadOnlyList<ProductDTO>>> GetProductsAsync([FromQuery]ProductGetAllParameters productGetAllParameters)
         {
             var spec = new ProductsSpecificationValues(productGetAllParameters);
@@ -39,6 +41,7 @@ namespace Talabat.API.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ProductDTO), 200)]
         [ProducesResponseType(typeof(ApiResponse),404)]
+        [Authorize(AuthenticationSchemes ="Bearer")]
         public async Task<ActionResult<ProductDTO>> GetProductAsync(int id)
         {
             var spec = new ProductsSpecificationValues(p=>p.Id==id);
@@ -51,12 +54,15 @@ namespace Talabat.API.Controllers
             return Ok(productDTO);
         }
         [HttpGet("GetBrands")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+
         public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetBrands()
         {
             var brands =await _brandGenericRepository.GetAllAsync();
             return Ok(brands);
         }
         [HttpGet("GetCategories")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult<IReadOnlyList<ProductCategory>>> GetCategories()
         {
             var categories =await _categoryGenericRepository.GetAllAsync();

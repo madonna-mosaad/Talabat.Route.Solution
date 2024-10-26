@@ -34,6 +34,6 @@ namespace Core.Layer.Order_Aggregate
         public ICollection<OrderItem> Items { get; set; } = new HashSet<OrderItem>();
         public decimal SubTotal {  get; set; }//price*Quantity to each item(product)
         public decimal GetTotal() => SubTotal + DeliveryMethod.Cost; //can make it property {get;}
-        public string PaymentIntentId {  get; set; }
+        public string PaymentIntentId { get; set; } = "0";
     }
 }

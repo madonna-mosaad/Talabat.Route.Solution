@@ -25,7 +25,12 @@ namespace Repository.Layer.Repositories
         public async Task<CustomerBasket?> GetAsync(string id)
         {
             var item= await _database.StringGetAsync(id);
-            return item.IsNullOrEmpty ? null : JsonSerializer.Deserialize<CustomerBasket>(item);
+            CustomerBasket? customerBasket = new CustomerBasket()
+            {
+                Id = id,
+                Items = item.IsNullOrEmpty ? null : JsonSerializer.Deserialize<List<BasketItem>>(item)
+            };
+            return customerBasket ;
         }
 
         public async Task<CustomerBasket?> SetAsync(CustomerBasket customerBasket)

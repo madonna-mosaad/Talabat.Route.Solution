@@ -11,6 +11,9 @@ using Repository.Layer.Repositories;
 using Repository.Layer.Data.Identity.Context;
 using Microsoft.AspNetCore.Identity;
 using Core.Layer.Models;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Newtonsoft.Json;
 
 
 namespace Talabat.API
@@ -23,7 +26,9 @@ namespace Talabat.API
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers()
+                .AddNewtonsoftJson(op=>op.SerializerSettings.ReferenceLoopHandling=ReferenceLoopHandling.Ignore);//to handle Bi-direction navigation property loop
+           
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -31,7 +36,7 @@ namespace Talabat.API
             .UseSqlServer(builder.Configuration.GetConnectionString("Default")));
             builder.Services.AddDbContext<IdentityContext>(options => options
            .UseSqlServer(builder.Configuration.GetConnectionString("Identity")));
-            builder.Services.AddIdentity<Users, IdentityRole>().AddEntityFrameworkStores<IdentityContext>();
+            
             builder.Services.AddServices();
             builder.Services.AddValidErrorServices();
            // to register the MemoryDbContext(Redis Context)
@@ -41,6 +46,23 @@ namespace Talabat.API
                 return ConnectionMultiplexer.Connect(connect);
             });
             builder.Services.AddScoped<IBasketRepository, BasketRepository>();
+
+            //to register the tokn validations to default scheme
+            builder.Services.AddAuthentication().AddJwtBearer(op =>
+            {
+                op.TokenValidationParameters=new TokenValidationParameters() 
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
+                    ValidateAudience = true,
+                    ValidAudience = builder.Configuration["JWT:ValidAudience"],
+                    ValidateLifetime= true,
+                    ClockSkew=TimeSpan.Zero,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey=new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]??string.Empty))
+                };
+            });
+            builder.Services.AddIdentity<Users, IdentityRole>().AddEntityFrameworkStores<IdentityContext>();
 
             var app = builder.Build();
             //explicit dependency injection (must register any class inside GetRequiredService<>)

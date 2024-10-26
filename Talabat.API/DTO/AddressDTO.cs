@@ -2,10 +2,12 @@
 
 namespace Talabat.API.DTO
 {
-    public class AddressParams
+    public class AddressDTO
     {
+        //first person can recieve the item
         [Required]
         public string FName { get; set; }
+        //second person can recieve the item
         [Required]
         public string SName { get; set; }
         [Required]
@@ -14,5 +16,6 @@ namespace Talabat.API.DTO
         public string City { get; set; }
         [Required]
         public string Country { get; set; }
+    
     }
 }

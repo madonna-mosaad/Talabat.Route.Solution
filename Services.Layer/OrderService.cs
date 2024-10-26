@@ -2,6 +2,7 @@
 using Core.Layer.Order_Aggregate;
 using Core.Layer.RepositoriesInterface;
 using Core.Layer.ServiceInterfaces;
+using Core.Layer.Specifications.SpecificationClasses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,6 +44,7 @@ namespace Services.Layer
                 foreach(var item in basket.Items)
                 {
                     var product = await _unitOfWork.RepositoryCreate<Product>().GetByIdAsync(item.ProductId);
+                    if (product is null) return null;
                     var productOrderItem= new ProductOrderItem(product.Id,product.Name,product.PictureUrl);
                     var orderItem = new OrderItem(productOrderItem, product.Price, item.Quantity);
                     Items.Add(orderItem);
@@ -61,14 +63,20 @@ namespace Services.Layer
         }
 
 
-        public Task<IReadOnlyList<Order>> GetOrdersToSpecificUser(string BuyerEmail)
+        public async Task<IReadOnlyList<Order>> GetOrdersToSpecificUser(string BuyerEmail)
         {
-            throw new NotImplementedException();
+            var orderRepo = _unitOfWork.RepositoryCreate<Order>();
+            var spec = new OrderSpecificationsValues(BuyerEmail);
+            var orders =await orderRepo.GetAllWithSpecAsync(spec);
+            return orders;
         }
 
-        public Task<Order> GetSpecificOrderByIdToSpecificUser(string BuyerEmail, int OrderId)
+        public async Task<Order> GetSpecificOrderByIdToSpecificUser(string BuyerEmail, int OrderId)
         {
-            throw new NotImplementedException();
+            var orderRepo = _unitOfWork.RepositoryCreate<Order>();
+            var spec = new OrderSpecificationsValues(BuyerEmail,OrderId);
+            var order = await orderRepo.GetByIdWithSpecAsync(spec);
+            return order;
         }
     }
 }
