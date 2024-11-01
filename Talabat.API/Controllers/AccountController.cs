@@ -27,6 +27,8 @@ namespace Talabat.API.Controllers
            _mapper = mapper;
         }
         [HttpPost("login")]
+        [ProducesResponseType(typeof(UserDTO), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 401)]
         public async Task<ActionResult<UserDTO>> Login(LoginDTO loginDTO)
         {
             var user = await _userManager.FindByEmailAsync(loginDTO.Email);
@@ -47,6 +49,8 @@ namespace Talabat.API.Controllers
             });
         }
         [HttpPost("register")]
+        [ProducesResponseType(typeof(UserDTO), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 400)]
         public async Task<ActionResult<UserDTO>> Register(RegisterDTO registerDTO)
         {
             //.Result.Value to make this async function done before CreateAsync start
@@ -80,14 +84,16 @@ namespace Talabat.API.Controllers
         }
 
         [HttpGet("User")]
-        [Authorize(AuthenticationSchemes ="Bearer")]
+        [ProducesResponseType(typeof(UserDTO), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 404)]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult<UserDTO>> GetUser()
         {
             var email =User.FindFirstValue(ClaimTypes.Email);
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null) 
             {
-                return NotFound(new ApiResponse(400));
+                return NotFound(new ApiResponse(404));
             }
             return Ok(new UserDTO()
             {
@@ -109,6 +115,8 @@ namespace Talabat.API.Controllers
         }
 
         [HttpPut("UpdateAddress")]
+        [ProducesResponseType(typeof(AddressDTO), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 400)]
         [Authorize(AuthenticationSchemes = "Bearer")]
         //return address not address dto because i want to make sure that address is updated
         public async Task<ActionResult<AddressDTO>> UpdateAddress(AddressDTO addressDTO)

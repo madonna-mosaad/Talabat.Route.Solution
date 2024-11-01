@@ -140,7 +140,7 @@ namespace Repository.Layer.Data.Migrations
                     b.Property<DateTimeOffset>("OrderDate")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("PaymentIntentId")
+                    b.Property<string?>("PaymentIntentId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

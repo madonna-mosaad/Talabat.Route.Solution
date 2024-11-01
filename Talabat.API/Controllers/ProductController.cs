@@ -26,8 +26,9 @@ namespace Talabat.API.Controllers
             _mapper = mapper;
         }
         //to arrive to this end point use => {BaseUrl}/api/Products
+        [Cached(300)]
         [HttpGet]
-        [Authorize(AuthenticationSchemes ="Bearer")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult<IReadOnlyList<ProductDTO>>> GetProductsAsync([FromQuery]ProductGetAllParameters productGetAllParameters)
         {
             var spec = new ProductsSpecificationValues(productGetAllParameters);
@@ -38,6 +39,7 @@ namespace Talabat.API.Controllers
             return Ok(new PaginationResponse<ProductDTO>(productGetAllParameters.PageSize,productGetAllParameters.PageIndex,count,productsDTo));
         }
         //to arrive to this end point use => {BaseUrl}/api/Products/id_value
+        [Cached(300)]
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ProductDTO), 200)]
         [ProducesResponseType(typeof(ApiResponse),404)]
@@ -53,6 +55,7 @@ namespace Talabat.API.Controllers
             var productDTO= _mapper.Map<Product,ProductDTO>(product);
             return Ok(productDTO);
         }
+        [Cached(300)]
         [HttpGet("GetBrands")]
         [Authorize(AuthenticationSchemes = "Bearer")]
 
@@ -61,6 +64,7 @@ namespace Talabat.API.Controllers
             var brands =await _brandGenericRepository.GetAllAsync();
             return Ok(brands);
         }
+        [Cached(300)]
         [HttpGet("GetCategories")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult<IReadOnlyList<ProductCategory>>> GetCategories()

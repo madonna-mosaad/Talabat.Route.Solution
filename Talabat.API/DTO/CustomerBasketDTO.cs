@@ -11,5 +11,8 @@ namespace Talabat.API.DTO
             Id = id;
             Items = new List<BasketItem>();
         }
+        public int DeliveryMethodId { get; set; }
+        public string? PaymentId { get; set; }
+        public string? ClientSecret { get; set; }
     }
 }

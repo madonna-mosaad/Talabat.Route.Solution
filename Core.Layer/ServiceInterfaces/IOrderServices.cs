@@ -9,7 +9,7 @@ namespace Core.Layer.ServiceInterfaces
 {
     public interface IOrderServices
     {
-        public Task<Order> CreateOrder(string BuyerEmail, string BasketId, int deliveryMethodId, Address address);
+        public Task<Order> CreateOrder(string BuyerEmail, string BasketId, Address address);
         public Task<IReadOnlyList<Order>> GetOrdersToSpecificUser(string BuyerEmail);
         public Task<Order> GetSpecificOrderByIdToSpecificUser(string BuyerEmail, int OrderId);
     }

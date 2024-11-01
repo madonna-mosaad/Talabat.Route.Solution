@@ -9,13 +9,14 @@ namespace Core.Layer.Order_Aggregate
 {
     public class Order:ModelBase
     {
-        public Order(string buyerEmail, Address shappingAddress, DeliveryMethod deliveryMethod, ICollection<OrderItem> items, decimal subTotal)
+        public Order(string buyerEmail, Address shappingAddress, DeliveryMethod deliveryMethod, ICollection<OrderItem> items, decimal subTotal,string paymentIntentId)
         {
             BuyerEmail = buyerEmail;
             ShappingAddress = shappingAddress;
             DeliveryMethod = deliveryMethod;
             Items = items;
             SubTotal = subTotal;
+            PaymentIntentId = paymentIntentId;
             
         }
         public Order() { }
@@ -34,6 +35,6 @@ namespace Core.Layer.Order_Aggregate
         public ICollection<OrderItem> Items { get; set; } = new HashSet<OrderItem>();
         public decimal SubTotal {  get; set; }//price*Quantity to each item(product)
         public decimal GetTotal() => SubTotal + DeliveryMethod.Cost; //can make it property {get;}
-        public string PaymentIntentId { get; set; } = "0";
+        public string? PaymentIntentId { get; set; } 
     }
 }

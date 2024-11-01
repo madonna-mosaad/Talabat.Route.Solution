@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Core.Layer.Models;
 using Core.Layer.RepositoriesInterface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
@@ -20,6 +21,7 @@ namespace Talabat.API.Controllers
             _mapper = mapper;
         }
         [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult<CustomerBasketDTO>> GetBasketAsync(string id)
         {
             var basket = await _basketRepository.GetAsync(id);
@@ -31,6 +33,9 @@ namespace Talabat.API.Controllers
             return Ok(Basket);
         }
         [HttpPost]
+        [ProducesResponseType(typeof(CustomerBasketDTO), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 400)]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult<CustomerBasketDTO>> SetBasketAsync(CustomerBasketDTO customerBasketDTO)
         {
             var customerBasket= _mapper.Map<CustomerBasketDTO,CustomerBasket> (customerBasketDTO);
@@ -43,6 +48,7 @@ namespace Talabat.API.Controllers
             return Ok(basket);
         }
         [HttpDelete]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task DeleteBasketAsync(string id)
         {
             await _basketRepository.DeleteAsync(id);    

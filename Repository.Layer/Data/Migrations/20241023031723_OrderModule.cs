@@ -43,7 +43,7 @@ namespace Repository.Layer.Data.Migrations
                     ShappingAddress_Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DeliveryMethodId = table.Column<int>(type: "int", nullable: true),
                     SubTotal = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    PaymentIntentId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    PaymentIntentId = table.Column<string?>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {

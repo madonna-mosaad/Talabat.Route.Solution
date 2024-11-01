@@ -19,6 +19,8 @@ namespace Talabat.API.Extensions
             services.AddScoped(typeof(IOrderServices), typeof(OrderService));
             services.AddScoped(typeof(IAuthService),typeof(AuthService));   
             services.AddAutoMapper(typeof(MappingProfile));
+            services.AddSingleton(typeof(IResponseCachingService), typeof(ResponseCachingService));
+            services.AddScoped(typeof(IPaymentService), typeof(PaymentService));   
             return services;
         }
     }

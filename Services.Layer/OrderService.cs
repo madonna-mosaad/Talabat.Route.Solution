@@ -15,15 +15,15 @@ namespace Services.Layer
     {
         private readonly IBasketRepository _basketRepository;
         private readonly IUnitOfWork _unitOfWork;
-        
+        private readonly IPaymentService _paymentService;
 
-        public OrderService(IBasketRepository basketRepository,IUnitOfWork unitOfWork)
+        public OrderService(IBasketRepository basketRepository,IUnitOfWork unitOfWork,IPaymentService paymentService)
         {
             _basketRepository = basketRepository;
             _unitOfWork = unitOfWork;
-            
+            _paymentService = paymentService;
         }
-        public async Task<Order> CreateOrder(string BuyerEmail, string BasketId, int deliveryMethodId, Core.Layer.Order_Aggregate.Address address)
+        public async Task<Order> CreateOrder(string BuyerEmail, string BasketId, Core.Layer.Order_Aggregate.Address address)
         {
             //in any businnes must be write peseudo code
             //pseudo code:
@@ -51,9 +51,17 @@ namespace Services.Layer
                 }
             }
             //create object from order
+            var spec = new OrderSpecificationsPaymentValues(basket.PaymentId);
+            var ExOrder =await _unitOfWork.RepositoryCreate<Order>().GetByIdWithSpecAsync(spec);
+            if (ExOrder != null)//check if more than one order has same PaymentIntentId
+            {
+                _unitOfWork.RepositoryCreate<Order>().Delete(ExOrder);
+                
+            }
+            var basketWithNewPaymentIntentId=await _paymentService.CreateOrUpdatePaymentIntent(BasketId);
             var subTotal= Items.Sum(i=>i.Price*i.Quantity);
-            var deliveryMethod= await _unitOfWork.RepositoryCreate<DeliveryMethod>().GetByIdAsync(deliveryMethodId);
-            var order=new Order(BuyerEmail,address,deliveryMethod,Items,subTotal);
+            var deliveryMethod= await _unitOfWork.RepositoryCreate<DeliveryMethod>().GetByIdAsync(basket.DeliveryMethodId);
+            var order=new Order(BuyerEmail,address,deliveryMethod,Items,subTotal, basketWithNewPaymentIntentId.PaymentId);
 
             //save in DB
              _unitOfWork.RepositoryCreate<Order>().Add(order);

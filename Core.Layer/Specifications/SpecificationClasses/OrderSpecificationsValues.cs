@@ -21,5 +21,9 @@ namespace Core.Layer.Specifications.SpecificationClasses
             //many but mandatory so eager not lazy
             Includes.Add(o => o.Items);
         }
+        //Icanot make 2 constractors take 1 string parameters so I will create another class
+        //public OrderSpecificationsValues(string paymentId) : base(o => o.PaymentIntentId == paymentId)
+        //{
+        //}
     }
 }

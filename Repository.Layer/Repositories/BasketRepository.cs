@@ -24,18 +24,28 @@ namespace Repository.Layer.Repositories
 
         public async Task<CustomerBasket?> GetAsync(string id)
         {
-            var item= await _database.StringGetAsync(id);
+            var itemBasket= await _database.StringGetAsync(id);
+            var desirialize = itemBasket.IsNullOrEmpty ? null : JsonSerializer.Deserialize<BasketResponse>(itemBasket);
             CustomerBasket? customerBasket = new CustomerBasket()
             {
                 Id = id,
-                Items = item.IsNullOrEmpty ? null : JsonSerializer.Deserialize<List<BasketItem>>(item)
+                Items = desirialize.BasketItems,
+                DeliveryMethodId=desirialize.DeliveryMethodId,
+                ClientSecret=desirialize.ClientSecret,
+                PaymentId=desirialize.PaymentId
+
             };
             return customerBasket ;
         }
-
+        //create or update
         public async Task<CustomerBasket?> SetAsync(CustomerBasket customerBasket)
         {
-            var item = await _database.StringSetAsync(customerBasket.Id,JsonSerializer.Serialize(customerBasket.Items),TimeSpan.FromDays(30));
+            var item = await _database.StringSetAsync(customerBasket.Id,JsonSerializer.Serialize(new BasketResponse() {
+                BasketItems= customerBasket.Items ,
+                DeliveryMethodId= customerBasket.DeliveryMethodId, 
+                ClientSecret= customerBasket.ClientSecret, 
+                PaymentId= customerBasket.PaymentId})
+                ,TimeSpan.FromDays(30));
             if (item)
             {
                 return await GetAsync(customerBasket.Id);
