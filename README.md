@@ -37,5 +37,4 @@ API for Talabat application with the following key features:
 ## API Documentation
 Explore the detailed API documentation for this project:
 - [Swagger API Documentation](https://localhost:7112/swagger/index.html)
-
-By amalgamating these advanced technologies and methodologies, this project aspires to deliver a sophisticated and robust solution for the Talabat application, ensuring optimal functionality, security, and maintainability.
+.
