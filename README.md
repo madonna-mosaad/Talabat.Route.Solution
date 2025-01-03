@@ -1,6 +1,5 @@
 # Project Overview
-
-This repository comprises a robust implementation aimed at enhancing the Talabat application through the following key features:
+API for Talabat application with the following key features:
 
 1. **User Accounts**:
    - Users can create and manage their accounts, enabling personalized experiences and order tracking.
